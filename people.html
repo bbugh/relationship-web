@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #controls {
+            text-align: center;
+            margin: 20px;
+        }
+
         #container {
             width: 500px;
             height: 500px;
@@ -10,6 +20,7 @@
             background-color: #f9f9f9;
             margin: 20px auto;
         }
+
         .person {
             width: 30px;
             height: 30px;
@@ -21,6 +32,7 @@
             color: white;
             font-weight: bold;
         }
+
         .line {
             position: absolute;
             background-color: rgba(46, 204, 113, 0.7);
@@ -28,14 +40,33 @@
         }
     </style>
 </head>
+
 <body>
+    <div id="controls">
+        <label for="peopleCount">Number of People: </label>
+        <select id="peopleCount">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+    </div>
     <div id="container"></div>
+
     <script>
         const container = document.getElementById('container');
-        const peopleCount = 5; // Change this to see more people
+        const peopleCountSelect = document.getElementById('peopleCount');
         const radius = 200; // Radius for circular arrangement
         const centerX = container.clientWidth / 2;
         const centerY = container.clientHeight / 2;
+
+        peopleCountSelect.addEventListener('change', () => {
+            drawVisualization(parseInt(peopleCountSelect.value));
+        });
 
         function createPerson(index, x, y) {
             const person = document.createElement('div');
@@ -60,7 +91,10 @@
         }
 
         function drawVisualization(count) {
+            container.innerHTML = ''; // Clear previous elements
             const points = [];
+
+            // Calculate positions of people
             for (let i = 0; i < count; i++) {
                 const angle = (i / count) * 2 * Math.PI;
                 const x = centerX + radius * Math.cos(angle);
@@ -69,19 +103,54 @@
                 createPerson(i, x, y);
             }
 
-            // Create self-relationships (loops)
+            // Self-relationships (tiny loops)
             points.forEach(({ x, y }) => createLine(x, y, x, y));
 
-            // Create paired relationships
+            // Paired relationships
             for (let i = 0; i < points.length; i++) {
                 for (let j = i + 1; j < points.length; j++) {
                     createLine(points[i].x, points[i].y, points[j].x, points[j].y);
                 }
             }
+
+            // Group relationships (for all groups larger than pairs)
+            if (count > 2) {
+                for (let size = 3; size <= count; size++) {
+                    drawGroupRelationships(points, size);
+                }
+            }
         }
 
-        drawVisualization(peopleCount);
+        function drawGroupRelationships(points, size) {
+            const indices = Array.from({ length: points.length }, (_, i) => i);
+            const combinations = getCombinations(indices, size);
+
+            combinations.forEach(comb => {
+                for (let i = 0; i < comb.length; i++) {
+                    for (let j = i + 1; j < comb.length; j++) {
+                        createLine(points[comb[i]].x, points[comb[i]].y, points[comb[j]].x, points[comb[j]].y);
+                    }
+                }
+            });
+        }
+
+        function getCombinations(arr, size) {
+            const result = [];
+            const f = (prefix = [], arr) => {
+                if (prefix.length === size) {
+                    result.push(prefix);
+                    return;
+                }
+                for (let i = 0; i < arr.length; i++) {
+                    f([...prefix, arr[i]], arr.slice(i + 1));
+                }
+            };
+            f([], arr);
+            return result;
+        }
+
+        drawVisualization(parseInt(peopleCountSelect.value));
     </script>
 </body>
-</html>
 
+</html>
