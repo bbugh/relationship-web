@@ -15,7 +15,6 @@
     #container {
       width: 100%;
       max-width: 800px;
-      height: auto;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: 20px;
@@ -24,37 +23,14 @@
       border: 1px solid #ddd;
       background-color: #f9f9f9;
       margin: 20px auto;
-      overflow: auto;
     }
 
-    .group {
+    canvas {
       width: 150px;
       height: 150px;
       border: 1px dashed #ccc;
       border-radius: 10px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-
-    .person {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background-color: #3498db;
-      position: absolute;
-      text-align: center;
-      line-height: 20px;
-      color: white;
-      font-weight: bold;
-    }
-
-    .line {
-      position: absolute;
-      background-color: rgba(46, 204, 113, 0.7);
-      transform-origin: 0 0;
+      background-color: #333;
     }
   </style>
 </head>
@@ -75,71 +51,74 @@
   <script>
     const container = document.getElementById('container');
     const peopleCountSelect = document.getElementById('peopleCount');
-    const groupSize = 100; // Size of each group box
-    const radius = 50; // Radius for dots in each group
-    const maxGroupWidth = 4; // Max groups per row
+    const groupSize = 150;
+    const radius = 50;
 
     peopleCountSelect.addEventListener('change', () => {
       drawVisualization(parseInt(peopleCountSelect.value));
     });
 
     function drawVisualization(count) {
-      container.innerHTML = ''; // Clear previous elements
-      let groupIndex = 0;
-
+      container.innerHTML = '';
       for (let size = 1; size <= count; size++) {
         const combinations = getCombinations(Array.from({ length: count }, (_, i) => i), size);
         combinations.forEach(comb => {
-          drawGroup(comb, groupIndex++, size);
+          drawGroup(comb);
         });
       }
     }
 
-    function drawGroup(indices, index, size) {
-      const group = document.createElement('div');
-      group.className = 'group';
+    function drawGroup(indices) {
+      const canvas = document.createElement('canvas');
+      canvas.width = groupSize;
+      canvas.height = groupSize;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, groupSize, groupSize);
 
-      container.appendChild(group);
-
+      const centerX = groupSize / 2;
+      const centerY = groupSize / 2;
       const points = [];
+
       indices.forEach((i, idx) => {
         const angle = (idx / indices.length) * 2 * Math.PI;
-        const x = groupSize / 2 + radius * Math.cos(angle);
-        const y = groupSize / 2 + radius * Math.sin(angle);
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
         points.push({ x, y });
-        createPerson(i, x, y, group);
+        drawCircle(ctx, x, y, i + 1);
       });
 
-      if (size > 1) {
+      if (indices.length > 1) {
         for (let i = 0; i < points.length; i++) {
           for (let j = i + 1; j < points.length; j++) {
-            createLine(points[i].x, points[i].y, points[j].x, points[j].y, group);
+            drawLine(ctx, points[i].x, points[i].y, points[j].x, points[j].y);
           }
         }
       }
+
+      container.appendChild(canvas);
     }
 
-
-    function createPerson(index, x, y, container) {
-      const person = document.createElement('div');
-      person.className = 'person';
-      person.textContent = index + 1;
-      person.style.left = `${x - 10}px`;
-      person.style.top = `${y - 10}px`;
-      container.appendChild(person);
+    function drawCircle(ctx, x, y, label) {
+      ctx.beginPath();
+      ctx.arc(x, y, 15, 0, 2 * Math.PI);
+      ctx.fillStyle = '#3498db';
+      ctx.fill();
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 14px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, x, y);
+      ctx.closePath();
     }
 
-    function createLine(x1, y1, x2, y2, container) {
-      const line = document.createElement('div');
-      line.className = 'line';
-      const length = Math.hypot(x2 - x1, y2 - y1);
-      const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-      line.style.width = `${length}px`;
-      line.style.height = '2px';
-      line.style.left = `${x1}px`;
-      line.style.top = `${y1}px`;
-      line.style.transform = `rotate(${angle}deg)`;
-      container.appendChild(line);
+    function drawLine(ctx, x1, y1, x2, y2) {
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = '#2ecc71';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.closePath();
     }
 
     function getCombinations(arr, size) {
