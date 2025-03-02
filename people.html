@@ -84,7 +84,9 @@
         drawCircle(ctx, centerX, centerY, indices[0] + 1);
       } else {
         indices.forEach((i, idx) => {
-          const angle = (idx / indices.length) * 2 * Math.PI - Math.PI / 2; // Rotate to center
+          const angle = indices.length === 2
+            ? idx * Math.PI // Horizontal for 2 dots
+            : (idx / indices.length) * 2 * Math.PI - Math.PI / 2; // Centered for 3+ dots
           const x = centerX + radius * Math.cos(angle);
           const y = centerY + radius * Math.sin(angle);
           points.push({ x, y });
