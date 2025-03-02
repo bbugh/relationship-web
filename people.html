@@ -79,20 +79,28 @@
       const centerY = groupSize / 2;
       const points = [];
 
-      indices.forEach((i, idx) => {
-        const angle = (idx / indices.length) * 2 * Math.PI;
-        const x = centerX + radius * Math.cos(angle);
-        const y = centerY + radius * Math.sin(angle);
-        points.push({ x, y });
-        drawCircle(ctx, x, y, i + 1);
-      });
+      if (indices.length === 1) {
+        // Special case for single circle centered in the box
+        drawCircle(ctx, centerX, centerY, indices[0] + 1);
+      } else {
+        indices.forEach((i, idx) => {
+          const angle = (idx / indices.length) * 2 * Math.PI;
+          const x = centerX + radius * Math.cos(angle);
+          const y = centerY + radius * Math.sin(angle);
+          points.push({ x, y });
+        });
 
-      if (indices.length > 1) {
+        // Draw lines first (background layer)
         for (let i = 0; i < points.length; i++) {
           for (let j = i + 1; j < points.length; j++) {
             drawLine(ctx, points[i].x, points[i].y, points[j].x, points[j].y);
           }
         }
+
+        // Draw circles on top (foreground layer)
+        indices.forEach((i, idx) => {
+          drawCircle(ctx, points[idx].x, points[idx].y, i + 1);
+        });
       }
 
       container.appendChild(canvas);
