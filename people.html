@@ -13,9 +13,14 @@
     }
 
     #container {
-      width: 600px;
-      height: 600px;
-      position: relative;
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      box-sizing: border-box;
       border: 1px solid #ddd;
       background-color: #f9f9f9;
       margin: 20px auto;
@@ -23,16 +28,16 @@
     }
 
     .group {
-      position: absolute;
       width: 150px;
       height: 150px;
       border: 1px dashed #ccc;
       border-radius: 10px;
-      margin: 5px;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+
 
     .person {
       width: 20px;
@@ -94,11 +99,6 @@
       const group = document.createElement('div');
       group.className = 'group';
 
-      const row = Math.floor(index / maxGroupWidth);
-      const col = index % maxGroupWidth;
-      group.style.left = `${col * (groupSize + 10)}px`;
-      group.style.top = `${row * (groupSize + 10)}px`;
-
       container.appendChild(group);
 
       const points = [];
@@ -118,6 +118,7 @@
         }
       }
     }
+
 
     function createPerson(index, x, y, container) {
       const person = document.createElement('div');
