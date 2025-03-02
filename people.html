@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #container {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            margin: 20px auto;
+        }
+        .person {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #3498db;
+            position: absolute;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            font-weight: bold;
+        }
+        .line {
+            position: absolute;
+            background-color: rgba(46, 204, 113, 0.7);
+            transform-origin: 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script>
+        const container = document.getElementById('container');
+        const peopleCount = 5; // Change this to see more people
+        const radius = 200; // Radius for circular arrangement
+        const centerX = container.clientWidth / 2;
+        const centerY = container.clientHeight / 2;
+
+        function createPerson(index, x, y) {
+            const person = document.createElement('div');
+            person.className = 'person';
+            person.textContent = index + 1;
+            person.style.left = `${x - 15}px`;
+            person.style.top = `${y - 15}px`;
+            container.appendChild(person);
+        }
+
+        function createLine(x1, y1, x2, y2) {
+            const line = document.createElement('div');
+            line.className = 'line';
+            const length = Math.hypot(x2 - x1, y2 - y1);
+            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+            line.style.width = `${length}px`;
+            line.style.height = '3px';
+            line.style.left = `${x1}px`;
+            line.style.top = `${y1}px`;
+            line.style.transform = `rotate(${angle}deg)`;
+            container.appendChild(line);
+        }
+
+        function drawVisualization(count) {
+            const points = [];
+            for (let i = 0; i < count; i++) {
+                const angle = (i / count) * 2 * Math.PI;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                points.push({ x, y });
+                createPerson(i, x, y);
+            }
+
+            // Create self-relationships (loops)
+            points.forEach(({ x, y }) => createLine(x, y, x, y));
+
+            // Create paired relationships
+            for (let i = 0; i < points.length; i++) {
+                for (let j = i + 1; j < points.length; j++) {
+                    createLine(points[i].x, points[i].y, points[j].x, points[j].y);
+                }
+            }
+        }
+
+        drawVisualization(peopleCount);
+    </script>
+</body>
+</html>
+
