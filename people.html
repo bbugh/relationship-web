@@ -51,6 +51,9 @@
       <option value="10">10</option>
     </select>
   </div>
+
+  <div id="totalConnections" style="text-align: center; margin: 10px;"></div>
+
   <div id="container"></div>
 
   <script>
@@ -78,13 +81,20 @@
 
     function drawVisualization(count) {
       container.innerHTML = '';
+      let totalGroups = 0;
+
       for (let size = 1; size <= count; size++) {
         const combinations = getCombinations(Array.from({ length: count }, (_, i) => i), size);
+        totalGroups += combinations.length;
         combinations.forEach(comb => {
           drawGroup(comb);
         });
       }
+
+      const totalConnectionsDiv = document.getElementById('totalConnections');
+      totalConnectionsDiv.textContent = `Relationships: ${totalGroups}`;
     }
+
 
     function drawGroup(indices) {
       const canvas = document.createElement('canvas');
