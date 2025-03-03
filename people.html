@@ -5,11 +5,16 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #1e1e1e;
     }
 
-    #controls {
-      text-align: center;
+    #controls,
+    #navigation,
+    #totalConnections,
+    #guideText {
       margin: 20px;
+      text-align: center;
     }
 
     #container {
@@ -30,11 +35,11 @@
       height: 150px;
       border: 1px dashed #ccc;
       border-radius: 10px;
-      background-color: #333;
+      background-color: #262A2B;
     }
 
     #guideText {
-      background-color: #2b2b2b;
+      background-color: #eaeaea;
       border: 2px solid #4E79A7;
       border-radius: 10px;
       padding: 20px;
@@ -43,11 +48,30 @@
       margin: 20px auto;
       font-size: 18px;
       line-height: 1.6;
-      color: #f0f0f0;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s, box-shadow 0.2s;
+      color: #1e1e1e;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s, color 0.3s;
       text-align: left;
-      font-size: 16px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1e1e1e;
+        color: #dfdcd7;
+      }
+
+      #container {
+        border: 1px solid #4B4943;
+        background-color: #262A2B;
+      }
+
+      #guideText {
+        background-color: #202324;
+        border: 2px solid #4E79A7;
+        color: #f0f0f0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        font-size: 16px;
+      }
     }
   </style>
 </head>
