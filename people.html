@@ -32,6 +32,23 @@
       border-radius: 10px;
       background-color: #333;
     }
+
+    #guideText {
+      background-color: #2b2b2b;
+      border: 2px solid #4E79A7;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 800px;
+      width: 80%;
+      margin: 20px auto;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #f0f0f0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: left;
+      font-size: 16px;
+    }
   </style>
 </head>
 
@@ -50,9 +67,18 @@
       <option value="9">9</option>
       <option value="10">10</option>
     </select>
+
+    <div id="navigation" style="text-align: center; margin: 20px;">
+      <button id="prevButton" style="margin-right: 10px;">Previous</button>
+      <button id="nextButton">Next</button>
+    </div>
+
   </div>
 
   <div id="totalConnections" style="text-align: center; margin: 10px;"></div>
+
+  <div id="guideText"></div>
+
 
   <div id="container"></div>
 
@@ -61,6 +87,19 @@
     const peopleCountSelect = document.getElementById('peopleCount');
     const groupSize = 150;
     const radius = 40;
+
+    const guideTexts = {
+      1: "When you are alone, every decision is your own. You set the pace, choose the direction, and only answer to yourself. It’s an opportunity to learn self-reliance and build a strong foundation for future relationships.",
+      2: "When two people connect, three relationships form: the relationship each person has with themselves, and the one they share together. Many couples focus on 'us' but often overlook the importance of maintaining healthy connections with themselves.",
+      3: "In a group of three, dynamics can shift quickly. There are seven relationships at play. Trios often face challenges with balance—whether it's feeling left out or managing how each pair interacts within the group. Awareness is key to keeping things fair and open.",
+      4: "With four people, fifteen relationships emerge. This is where the complexity of small groups shows up. Teams of four can accomplish a lot if they find a rhythm, but they also need to navigate differing priorities and perspectives.",
+      5: "A group of five introduces thirty-one relationships. At this size, roles often start to form naturally—leaders, listeners, organizers. It’s helpful to recognize and adapt to these roles while keeping the group’s goals in mind.",
+      6: "Six people create sixty-three relationships. It’s a small community where different personalities and ideas mix. This is often when group culture starts to take shape, and being intentional about that culture can make a big difference.",
+      7: "Seven people bring 127 relationships into play. At this level, subgroups and alliances can form. It’s a good time to focus on inclusivity and making sure every voice is heard.",
+      8: "With eight people, there are 255 connections. This is like a small organization where communication matters more than ever. Keeping the group aligned on goals and values helps prevent misunderstandings.",
+      9: "Nine people create 511 relationships. Maintaining clarity and consistency becomes a challenge. It helps to establish clear norms and practices that keep the group functioning well even as individual connections ebb and flow.",
+      10: "Ten people generate 1023 relationships. At this scale, it’s easy for individuals to feel lost or for messages to get muddled. Strong leadership and open communication channels help everyone stay connected and engaged."
+    };
 
     const colors = [
       '#4E79A7', // Blue
@@ -92,9 +131,11 @@
       }
 
       const totalConnectionsDiv = document.getElementById('totalConnections');
-      totalConnectionsDiv.textContent = `Relationships: ${totalGroups}`;
-    }
+      totalConnectionsDiv.textContent = `Total Number of Groups: ${totalGroups}`;
 
+      const guideTextDiv = document.getElementById('guideText');
+      guideTextDiv.textContent = guideTexts[count] || "No guide available for this number of people.";
+    }
 
     function drawGroup(indices) {
       const canvas = document.createElement('canvas');
@@ -172,6 +213,25 @@
     }
 
     drawVisualization(parseInt(peopleCountSelect.value));
+
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+
+    prevButton.addEventListener('click', () => {
+      const currentCount = parseInt(peopleCountSelect.value);
+      if (currentCount > 1) {
+        peopleCountSelect.value = currentCount - 1;
+        drawVisualization(currentCount - 1);
+      }
+    });
+
+    nextButton.addEventListener('click', () => {
+      const currentCount = parseInt(peopleCountSelect.value);
+      if (currentCount < 10) {
+        peopleCountSelect.value = currentCount + 1;
+        drawVisualization(currentCount + 1);
+      }
+    });
   </script>
 </body>
 
