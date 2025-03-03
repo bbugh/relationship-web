@@ -177,16 +177,16 @@
       } else {
         indices.reverse().forEach((i, idx) => {
           const angle = indices.length === 2
-            ? idx * Math.PI // Horizontal for 2 dots
-            : (idx / indices.length) * 2 * Math.PI - Math.PI / 2; // Centered for 3+ dots
+            ? idx * Math.PI
+            : (idx / indices.length) * 2 * Math.PI - Math.PI / 2;
           const x = centerX + radius * Math.cos(angle);
           const y = centerY + radius * Math.sin(angle);
-          points.push({ x, y });
+          points.push({ x, y, color: colors[i % colors.length] });
         });
 
         for (let i = 0; i < points.length; i++) {
           for (let j = i + 1; j < points.length; j++) {
-            drawLine(ctx, points[i].x, points[i].y, points[j].x, points[j].y);
+            drawLine(ctx, points[i].x, points[i].y, points[j].x, points[j].y, points[i].color, points[j].color);
           }
         }
 
@@ -211,11 +211,14 @@
       ctx.closePath();
     }
 
-    function drawLine(ctx, x1, y1, x2, y2) {
+    function drawLine(ctx, x1, y1, x2, y2, colorA, colorB) {
+      const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+      gradient.addColorStop(0, colorA);
+      gradient.addColorStop(1, colorB);
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       ctx.lineTo(x2, y2);
-      ctx.strokeStyle = '#2ecc71';
+      ctx.strokeStyle = gradient;
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.closePath();
