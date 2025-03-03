@@ -73,6 +73,17 @@
         font-size: 16px;
       }
     }
+
+    #container,
+    #guideText,
+    #totalConnections {
+      /* make sure this is the same timing as applyTransition */
+      transition: opacity 0.1s ease;
+    }
+
+    .hidden {
+      opacity: 0;
+    }
   </style>
 </head>
 
@@ -244,11 +255,29 @@
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
 
+    function applyTransition() {
+      const container = document.getElementById('container');
+      const guideText = document.getElementById('guideText');
+      const totalConnections = document.getElementById('totalConnections');
+
+      // Add the 'hidden' class to trigger the fade-out
+      container.classList.add('hidden');
+      guideText.classList.add('hidden');
+      totalConnections.classList.add('hidden');
+
+      setTimeout(() => {
+        drawVisualization(parseInt(peopleCountSelect.value));
+        container.classList.remove('hidden');
+        guideText.classList.remove('hidden');
+        totalConnections.classList.remove('hidden');
+      }, 100);
+    }
+
     prevButton.addEventListener('click', () => {
       const currentCount = parseInt(peopleCountSelect.value);
       if (currentCount > 1) {
         peopleCountSelect.value = currentCount - 1;
-        drawVisualization(currentCount - 1);
+        applyTransition();
       }
     });
 
@@ -256,7 +285,7 @@
       const currentCount = parseInt(peopleCountSelect.value);
       if (currentCount < 10) {
         peopleCountSelect.value = currentCount + 1;
-        drawVisualization(currentCount + 1);
+        applyTransition();
       }
     });
   </script>
