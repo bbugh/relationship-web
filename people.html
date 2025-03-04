@@ -400,34 +400,42 @@
 
       container.classList.add('transparent');
       guideText.classList.add('transparent');
-      totalConnections.classList.add('transparent');
       extraPage.classList.add('transparent');
+
+      if (count === '1') {
+        prevButton.disabled = true;
+      } else if (count === 'extra') {
+        nextButton.disabled = true;
+      } else {
+        prevButton.disabled = false;
+        nextButton.disabled = false;
+      }
 
       setTimeout(() => {
         if (count === 'extra') {
           [
             extraPage,
             container,
-            totalConnections,
-            guideText
+            guideText,
+            totalConnections
           ].forEach(el => {
             el.classList.add('hidden');
           });
           extraPage.classList.remove('hidden');
           extraPage.classList.remove('transparent');
         } else {
-          drawVisualization(parseInt(count));
           [
             extraPage,
             container,
-            totalConnections,
-            guideText
+            guideText,
+            totalConnections
           ].forEach(el => {
             el.classList.remove('transparent');
             el.classList.remove('hidden');
           });
           extraPage.classList.add('hidden');
         }
+        drawVisualization(parseInt(count));
       }, 100);
     }
 
