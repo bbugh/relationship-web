@@ -27,6 +27,7 @@
       border: 1px solid #ddd;
       background-color: #f9f9f9;
       margin: 20px auto;
+      gap: 20px;
     }
 
     canvas {
@@ -80,8 +81,80 @@
       transition: opacity 0.1s ease;
     }
 
-    .hidden {
+    .transparent {
       opacity: 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .numberBlockContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .numberBlock {
+      background-color: #4E79A7;
+      color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.6;
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .numberTitle,
+    .numberRelationships,
+    .numberDescription {
+      margin: 0;
+    }
+
+    .numberTitle {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .numberRelationships {
+      color: #F1CE63;
+      font-size: 2.5rem;
+      font-weight: 900;
+    }
+
+    .numberValue {
+      overflow-wrap: break-word;
+      white-space: normal;
+      word-break: break-all;
+    }
+
+    .numberDescription {
+      font-size: 1.1rem;
+      color: #e0e0e0;
+      width: 60ch;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .numberBlock {
+        background-color: #333;
+        color: #f0f0f0;
+      }
+
+      .numberValue,
+      .numberRelationships {
+        color: #F28E2B;
+        word-wrap: break-word;
+      }
     }
   </style>
 </head>
@@ -100,6 +173,7 @@
       <option value="8">8</option>
       <option value="9">9</option>
       <option value="10">10</option>
+      <option value="extra">Even more</option>
     </select>
 
     <div id="navigation" style="text-align: center; margin: 20px;">
@@ -113,8 +187,70 @@
 
   <div id="guideText"></div>
 
-
   <div id="container"></div>
+
+  <div id="extraPage" class="hidden">
+    <div class="numberBlockContainer">
+      <div class="numberBlock" data-relationships="25">
+        <p class="numberTitle">How about 25 people?</p>
+        <p class="numberRelationships">
+          <span class="numberValue">33,554,431</span> relationships
+        </p>
+        <p class="numberDescription">
+          With only 25 people, if the number of relationships were grains of rice, it would be enough to fill 2-3
+          bathtubs to the brim.
+        </p>
+      </div>
+      <div class="numberBlock" data-relationships="50">
+        <p class="numberTitle">If there are 50 people, there are:</p>
+        <p class="numberRelationships">
+          <span class="numberValue">1,125,899,906,842,623</span>
+          relationships
+        </p>
+        <p class="numberDescription">
+          With 50 people, the number of relationships is more than the populations of
+
+          137,159
+          Earths, more than the total stars in 3,750 Milky Way galaxies, and more than the approximate number of
+          heartbeats that 300,000 people would experience in their
+          lifetimes.
+        </p>
+      </div>
+      <div class="numberBlock" data-relationships="100">
+        <p class="numberTitle">What about 100 people in a group?</p>
+        <p class="numberRelationships">
+          <span class="numberValue">1,267,650,600,228,229,401,496,703,205,376</span>
+          relationships
+        </p>
+        <p class="numberDescription">
+          A number so large it surpasses the estimated total number of molecules
+          on Earth. Imagine the molecules of every blade of grass, every grain
+          of sand, every drop of water, every breath of air, all of the insects,
+          rocks, trees, people on the planet... combined.
+        </p>
+      </div>
+      <div class="numberBlock" data-relationships="150">
+        <p class="numberTitle">How about Dunbar's number, 150 people?</p>
+        <p class="numberRelationships">
+          <span
+            class="numberValue">76,159,122,514,872,175,697,099,134,758,191,311,052,812,072,499,463,056,403,915,494,515,235,968,975</span>
+          relationships
+        </p>
+        <p class="numberDescription">
+          Can you believe it? This unfathomably large number of relationships form from
+          only 150 people. This number is so huge that it can only be compared to hypothetical mathematical
+          concepts like
+
+          how many particles the entire universe would contain if we reconfigured it to be
+          completely made out of superdense matter...
+        </p>
+        <p class="numberDescription">
+          ... or the number of
+          relationships in a group of people.
+        </p>
+      </div>
+    </div>
+  </div>
 
   <script>
     const container = document.getElementById('container');
@@ -124,14 +260,14 @@
 
     const guideTexts = {
       1: "When you are alone, every decision is your own. You set the pace, choose the direction, and only answer to yourself. It's an opportunity to learn self-reliance and build a strong foundation for future relationships.",
-      2: "When two people connect, three relationships form: the relationship each person has with themselves, and the one they share together. Many couples focus on \"us\" but often overlook the importance of maintaining healthy connections with \"self\".",
-      3: "In a group of three, dynamics can shift quickly. There are seven relationships at play. Trios often face challenges with balance, whether it's feeling left out or managing how each pair interacts within the group. This can be especially true in relationships with natural power imbalances, like parents or executives.",
-      4: "With four people, fifteen relationships emerge. This is where the complexity of small groups shows up. Teams of four can accomplish a lot if they find a rhythm, but they also need to navigate differing priorities and perspectives. Leadership may begin to appear, but still be fluid.",
+      2: "When two people connect, three relationships form: the relationship each person has with themselves, and the one they share together. Many couples focus on \"us\" or \"self\" and overlook the importance of maintaining the health of all of the connections.",
+      3: "In a group of three, there are seven relationships at play. Trios often face challenges with balance, whether it's feeling left out, balancing competing needs, or managing how each pair interacts within the group. This can be especially true in relationships with natural power imbalances, like parenting.",
+      4: "With four people, fifteen relationships emerge. This is where the complexity of small groups really shows up. Teams of four can accomplish a lot if they find a rhythm, but they also need to navigate differing priorities and perspectives. Leadership may begin to appear, but still be fluid.",
       5: "A group of five introduces thirty-one relationships. At this size, roles often start to form naturally: leaders, listeners, organizers. It's helpful to recognize and adapt to these roles while keeping the group's goals in mind.",
-      6: "Six people create sixty-three relationships. It's a small community where different personalities and ideas mix. This is often when group culture starts to take shape, and being intentional about that culture can make a big difference.",
-      7: "Seven people bring 127 relationships into play. At this level, subgroups and alliances can form. It's a good time to focus on inclusivity and making sure every voice is heard.",
+      6: "Six people create sixty-three relationships. It's now a small community where different personalities and ideas mix. This is often when group culture starts to take shape, and being intentional about that culture can make a big difference.",
+      7: "Seven people bring 127 relationships into play. At this level, subgroups and alliances can form. It is important to focus on building trust and understanding among all members to prevent subgroups from becoming divisive cliques, and to ensure that all voices can be heard.",
       8: "With eight people, there are 255 connections. This is like a small organization where communication matters more than ever. Keeping the group aligned on goals and values helps prevent misunderstandings.",
-      9: "Nine people create 511 relationships. Maintaining clarity and consistency becomes a challenge. It helps to establish clear norms and practices that keep the group functioning well even as individual connections ebb and flow.",
+      9: "Nine people create 511 relationships. Maintaining clarity and consistency becomes a challenge, but it serves to establish clear norms and practices that keep the group functioning well even as individual connections ebb and flow.",
       10: "Ten people generate 1023 relationships. At this scale, it's easy for individuals to feel lost or for messages to get muddled. Strong leadership and open communication channels help everyone stay connected and engaged."
     };
 
@@ -147,10 +283,6 @@
       'hsl(16, 9%, 60%)', // Gray
       'hsl(354, 100%, 81%)'  // Brown
     ]
-
-    peopleCountSelect.addEventListener('change', () => {
-      drawVisualization(parseInt(peopleCountSelect.value));
-    });
 
     function drawVisualization(count) {
       container.innerHTML = '';
@@ -263,35 +395,67 @@
       const container = document.getElementById('container');
       const guideText = document.getElementById('guideText');
       const totalConnections = document.getElementById('totalConnections');
+      const extraPage = document.getElementById('extraPage');
+      const count = peopleCountSelect.value;
 
-      // Add the 'hidden' class to trigger the fade-out
-      container.classList.add('hidden');
-      guideText.classList.add('hidden');
-      totalConnections.classList.add('hidden');
+      container.classList.add('transparent');
+      guideText.classList.add('transparent');
+      totalConnections.classList.add('transparent');
+      extraPage.classList.add('transparent');
 
       setTimeout(() => {
-        drawVisualization(parseInt(peopleCountSelect.value));
-        container.classList.remove('hidden');
-        guideText.classList.remove('hidden');
-        totalConnections.classList.remove('hidden');
+        if (count === 'extra') {
+          [
+            extraPage,
+            container,
+            totalConnections,
+            guideText
+          ].forEach(el => {
+            el.classList.add('hidden');
+          });
+          extraPage.classList.remove('hidden');
+          extraPage.classList.remove('transparent');
+        } else {
+          drawVisualization(parseInt(count));
+          [
+            extraPage,
+            container,
+            totalConnections,
+            guideText
+          ].forEach(el => {
+            el.classList.remove('transparent');
+            el.classList.remove('hidden');
+          });
+          extraPage.classList.add('hidden');
+        }
       }, 100);
     }
 
+    peopleCountSelect.addEventListener('change', () => {
+      applyTransition();
+    });
+
     prevButton.addEventListener('click', () => {
-      const currentCount = parseInt(peopleCountSelect.value);
-      if (currentCount > 1) {
-        peopleCountSelect.value = currentCount - 1;
-        applyTransition();
+      const currentCount = peopleCountSelect.value;
+      if (currentCount === 'extra') {
+        peopleCountSelect.value = '10';
+      } else if (parseInt(currentCount) > 1) {
+        peopleCountSelect.value = parseInt(currentCount) - 1;
       }
+      applyTransition();
     });
 
     nextButton.addEventListener('click', () => {
-      const currentCount = parseInt(peopleCountSelect.value);
-      if (currentCount < 10) {
-        peopleCountSelect.value = currentCount + 1;
-        applyTransition();
+      const currentCount = peopleCountSelect.value;
+      if (currentCount === '10') {
+        peopleCountSelect.value = 'extra';
+      } else if (currentCount !== 'extra' && parseInt(currentCount) < 10) {
+        peopleCountSelect.value = parseInt(currentCount) + 1;
       }
+      applyTransition();
     });
+
+    applyTransition();
   </script>
 </body>
 
