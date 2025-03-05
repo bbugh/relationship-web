@@ -344,6 +344,7 @@
     const peopleCountSelect = document.getElementById('peopleCount');
     const groupSize = 150;
     const radius = 40;
+    const peopleQuery = 'p'
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -498,6 +499,18 @@
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
 
+    function updateQueryString(people) {
+      const url = new URL(window.location);
+
+      if (people === '1') {
+        url.searchParams.delete(peopleQuery);
+      } else {
+        url.searchParams.set(peopleQuery, people);
+      }
+
+      window.history.pushState({}, '', url);
+    }
+
     function applyTransition() {
       window.scrollTo({ top: 0 });
 
@@ -545,6 +558,7 @@
           extraPage.classList.add('hidden');
         }
         drawVisualization(parseInt(count));
+        updateQueryString(count);
       }, 100);
     }
 
@@ -580,6 +594,13 @@
       }
     });
 
+    function setup() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(peopleQuery) || '1';
+      peopleCountSelect.value = getPeopleFromQueryString();
+    }
+
+    setup();
     applyTransition();
   </script>
 </body>
