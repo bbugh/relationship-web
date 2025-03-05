@@ -546,6 +546,14 @@
       applyTransition();
     });
 
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        prevButton.click();
+      } else if (event.key === 'ArrowRight') {
+        nextButton.click();
+      }
+    });
+
     applyTransition();
   </script>
 </body>
