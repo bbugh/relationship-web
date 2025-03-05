@@ -258,6 +258,23 @@
     const groupSize = 150;
     const radius = 40;
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const canvas = entry.target;
+          if (canvas.dataset.rendered === 'false') {
+            const comb = JSON.parse(canvas.dataset.indices);
+            drawGroup(canvas, comb);
+            canvas.dataset.rendered = 'true';
+          }
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '200px',
+      threshold: 0.1
+    });
+
     const guideTexts = {
       1: "When you are alone, every decision is your own. You set the pace, choose the direction, and only answer to yourself. It's an opportunity to learn self-reliance and build a strong foundation for future relationships.",
       2: "When two people connect, three relationships form: the relationship each person has with themselves, and the one they share together. Many couples focus on \"us\" or \"self\" and overlook the importance of maintaining the health of all of the connections.",
@@ -293,7 +310,14 @@
         const combinations = getCombinations(Array.from({ length: count }, (_, i) => i), size);
         totalGroups += combinations.length;
         combinations.forEach(comb => {
-          drawGroup(comb, groupIndex);
+          const canvas = document.createElement('canvas');
+          canvas.width = groupSize;
+          canvas.height = groupSize;
+          canvas.dataset.indices = JSON.stringify(comb);
+          canvas.dataset.groupIndex = groupIndex;
+          canvas.dataset.rendered = 'false';
+          container.appendChild(canvas);
+          observer.observe(canvas);
           groupIndex++;
         });
       }
@@ -302,10 +326,7 @@
       document.getElementById('guideText').textContent = guideTexts[count] || "No guide available for this number of people.";
     }
 
-    function drawGroup(indices, groupIndex) {
-      const canvas = document.createElement('canvas');
-      canvas.width = groupSize;
-      canvas.height = groupSize;
+    function drawGroup(canvas, indices) {
       const ctx = canvas.getContext('2d');
       ctx.clearRect(0, 0, groupSize, groupSize);
 
@@ -340,9 +361,7 @@
       ctx.font = '12px Arial';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(groupIndex, groupSize - 8, groupSize - 8);
-
-      container.appendChild(canvas);
+      ctx.fillText(canvas.dataset.groupIndex, groupSize - 8, groupSize - 8);
     }
 
     function drawCircle(ctx, x, y, label, color) {
