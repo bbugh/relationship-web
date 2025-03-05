@@ -51,13 +51,14 @@
     #container {
       width: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, max-content));
       gap: 20px;
       padding: 20px;
       box-sizing: border-box;
       border: 1px solid #ddd;
       background-color: #f9f9f9;
       margin: 20px auto;
+      justify-content: center;
     }
 
     canvas {
