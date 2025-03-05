@@ -243,13 +243,13 @@
     </select>
 
     <div id="navigation">
-      <button id="prevButton" style="margin-right: 10px;">Prev</button>
+      <button id="prevButton">Prev</button>
       <button id="nextButton">Next</button>
     </div>
 
   </div>
 
-  <div id="totalConnections" style="text-align: center; margin: 10px;"></div>
+  <div id="totalConnections"></div>
 
   <div id="guideText"></div>
 
@@ -377,6 +377,7 @@
         totalGroups += combinations.length;
         combinations.forEach(comb => {
           const canvas = document.createElement('canvas');
+          canvas.setAttribute('aria-label', `Group #${groupIndex}, combination ${comb.join(', ')}`);
           canvas.width = groupSize;
           canvas.height = groupSize;
           canvas.dataset.indices = JSON.stringify(comb);
