@@ -20,6 +20,13 @@
       text-align: center;
     }
 
+    #container,
+    #guideText,
+    #totalConnections {
+      transition: opacity 0.1s ease;
+      /* match applyTransition */
+    }
+
     #container {
       width: 100%;
       display: grid;
@@ -30,7 +37,6 @@
       border: 1px solid #ddd;
       background-color: #f9f9f9;
       margin: 20px auto;
-      gap: 20px;
     }
 
     canvas {
@@ -54,33 +60,6 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s, color 0.3s;
       text-align: left;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #1e1e1e;
-        color: #dfdcd7;
-      }
-
-      #container {
-        border: 1px solid #4B4943;
-        background-color: #262A2B;
-      }
-
-      #guideText {
-        background-color: #202324;
-        border: 2px solid #4E79A7;
-        color: #f0f0f0;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        font-size: 16px;
-      }
-    }
-
-    #container,
-    #guideText,
-    #totalConnections {
-      /* make sure this is the same timing as applyTransition */
-      transition: opacity 0.1s ease;
     }
 
     .transparent {
@@ -109,7 +88,6 @@
       text-align: center;
       font-size: 1.2rem;
       line-height: 1.6;
-
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -145,35 +123,7 @@
       max-width: 60ch;
     }
 
-    @media (prefers-color-scheme: dark) {
-      .numberBlock {
-        background-color: #333;
-        color: #f0f0f0;
-      }
-
-      .numberValue,
-      .numberRelationships {
-        color: #F28E2B;
-        word-wrap: break-word;
-      }
-    }
-
-    #container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    canvas {
-      width: 150px;
-      height: 150px;
-      border: 1px dashed #ccc;
-      border-radius: 10px;
-      background-color: #262A2B;
-    }
-
+    /* Mobile styles */
     @media (max-width: 600px) {
       #container {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -238,6 +188,38 @@
 
       .numberDescription {
         font-size: 1rem;
+      }
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1e1e1e;
+        color: #dfdcd7;
+      }
+
+      #container {
+        border: 1px solid #4B4943;
+        background-color: #262A2B;
+      }
+
+      #guideText {
+        background-color: #202324;
+        border: 2px solid #4E79A7;
+        color: #f0f0f0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        font-size: 16px;
+      }
+
+      .numberBlock {
+        background-color: #333;
+        color: #f0f0f0;
+      }
+
+      .numberValue,
+      .numberRelationships {
+        color: #F28E2B;
+        word-wrap: break-word;
       }
     }
   </style>
@@ -330,7 +312,7 @@
         </p>
         <p class="numberDescription">
           ... or the number of
-          relationships in a group of people.
+          relationships in a small group of people.
         </p>
       </div>
     </div>
