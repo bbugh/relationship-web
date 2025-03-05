@@ -2,6 +2,9 @@
 <html>
 
 <head>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=1.0">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -44,7 +47,6 @@
       border-radius: 10px;
       padding: 20px;
       max-width: 75ch;
-      width: 100%;
       margin: 20px auto;
       font-size: 18px;
       line-height: 1.6;
@@ -94,7 +96,6 @@
       flex-direction: column;
       gap: 40px;
       padding: 40px;
-      max-width: 1000px;
       margin: 0 auto;
     }
 
@@ -141,7 +142,7 @@
     .numberDescription {
       font-size: 1.1rem;
       color: #e0e0e0;
-      width: 60ch;
+      max-width: 60ch;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -154,6 +155,69 @@
       .numberRelationships {
         color: #F28E2B;
         word-wrap: break-word;
+      }
+    }
+
+    #container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    canvas {
+      width: 150px;
+      height: 150px;
+      border: 1px dashed #ccc;
+      border-radius: 10px;
+      background-color: #262A2B;
+    }
+
+    @media (max-width: 600px) {
+      #container {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+        padding: 10px;
+      }
+
+      canvas {
+        width: 100px;
+        height: 100px;
+      }
+
+      #controls,
+      #navigation,
+      #totalConnections,
+      #guideText {
+        margin: 10px;
+        font-size: 14px;
+      }
+
+      #guideText {
+        max-width: 90vw;
+      }
+
+      .numberBlockContainer {
+        padding: 20px;
+        gap: 20px;
+      }
+
+      .numberBlock {
+        padding: 20px;
+        font-size: 1rem;
+      }
+
+      .numberTitle {
+        font-size: 1.5rem;
+      }
+
+      .numberRelationships {
+        font-size: 2rem;
+      }
+
+      .numberDescription {
+        font-size: 1rem;
       }
     }
   </style>
