@@ -527,10 +527,13 @@
 
       if (count === '1') {
         prevButton.disabled = true;
-      } else if (count === 'extra') {
-        nextButton.disabled = true;
       } else {
         prevButton.disabled = false;
+      }
+
+      if (count === 'extra') {
+        nextButton.disabled = true;
+      } else {
         nextButton.disabled = false;
       }
 
